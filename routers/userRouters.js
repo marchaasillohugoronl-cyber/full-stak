@@ -1,11 +1,10 @@
-const express = require('express')
-const router = express.Router()
 
-// Importa los controladores
-const userController = require('../controllers/userController')
+const express = require('express');
+const router = express.Router();
 
-// Define la ruta GET para consultar todos los usuarios
-router.get('/', userController.getAllUser)
+const userController = require('../controllers/userController');
 
-// Exporta las rutas
-module.exports = router
+router.get('/', userController.getAllUser);
+router.get('/:id', userController.getUserById);
+
+module.exports = router;
