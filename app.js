@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
         title: 'Bienvenido a mi sitio web',
         showMessage: true,
         message: 'Este es un mensaje desde Express',
-        items: [1, 2, 3, 4]
+        items: [1, 2, 3, 4, 5]
     };
 
     res.render('index', data);
