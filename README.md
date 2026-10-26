@@ -20,97 +20,80 @@ curl.exe -X PUT "http://localhost:3000/user/18" -H "Content-Type: application/js
 //Eliminar usuario 18:
 curl.exe -X DELETE "http://localhost:3000/user/18"
 
+=================================================
+//levantar los servicios
+Start-Service MongoDB
+//2. Entrar nuevamente a MongoDB
+& "$env:LOCALAPPDATA\Programs\mongosh\mongosh.exe" "mongodb://127.0.0.1:27017"
+//Después selecciona tu base de datos:
+use fullstak
+//Comprueba tus usuarios:
+db.usuarios.find()
 
-let usuarios = [];
-let siguienteId = 1;
+# Full Stak
 
-// Consultar todos los usuarios
-exports.getAllUser = (req, res) => {
-    res.status(200).json({
-        status: 200,
-        usuarios: usuarios
-    });
-};
+Proyecto de práctica desarrollado con Node.js, Express y MongoDB. El objetivo es construir una API para gestionar usuarios y aprender sobre rutas, controladores, bases de datos y autenticación.
 
-// Consultar un usuario por ID
-exports.getUserById = (req, res) => {
-    const usuario = usuarios.find(u => u.id === Number(req.params.id));
+## 1. Tecnologías utilizadas
 
-    if (!usuario) {
-        return res.status(404).json({
-            status: 404,
-            mensaje: "Usuario no encontrado"
-        });
-    }
+- **Node.js:** entorno de ejecución de JavaScript.
+- **Express:** framework para crear el servidor y las rutas HTTP.
+- **MongoDB:** base de datos NoSQL.
+- **MongoDB Shell (`mongosh`):** consola para administrar MongoDB.
+- **EJS:** motor de plantillas para generar vistas HTML.
+- **JSON:** formato para intercambiar datos entre el cliente y el servidor.
+- **JWT (pendiente de implementar):** mecanismo para verificar tokens de autenticación.
 
-    res.status(200).json({
-        status: 200,
-        usuario: usuario
-    });
-};
+## 2. Ubicación del proyecto
 
-// Crear usuario
-exports.createUser = (req, res) => {
-    const { nombre, apellido, email, telefono } = req.body;
 
-    const nuevoUsuario = {
-        id: siguienteId++,
-        nombre,
-        apellido,
-        email,
-        telefono
-    };
+Estructura conocida:
 
-    usuarios.push(nuevoUsuario);
+```text
+full-stak/
+├── app.js
+├── package.json
+├── package-lock.json
+├── controllers/
+│   └── userController.js
+├── routers/
+│   └── userRouters.js
+├── views/
+├── node_modules/
+└── usuario.json
+```
 
-    res.status(201).json({
-        status: 201,
-        mensaje: "Usuario creado correctamente",
-        usuario: nuevoUsuario
-    });
-};
+La estructura puede cambiar conforme avance el desarrollo.
 
-// Actualizar usuario
-exports.updateUser = (req, res) => {
-    const usuario = usuarios.find(u => u.id === Number(req.params.id));
+## 3. Versiones instaladas
 
-    if (!usuario) {
-        return res.status(404).json({
-            status: 404,
-            mensaje: "Usuario no encontrado"
-        });
-    }
+| Tecnología | Versión |
+|---|---|
+| MongoDB Server | 8.0.11 |
+| MongoDB Shell | 2.14.0 |
+| MongoDB Compass | 1.53.1 |
+| Node.js | Verificar con `node -v` |
+| Express | Verificar en `package.json` |
+| EJS | Instalado mediante `npm i ejs` |
 
-    const { nombre, apellido, email, telefono } = req.body;
+## 4. Cómo iniciar el proyecto
 
-    if (nombre !== undefined) usuario.nombre = nombre;
-    if (apellido !== undefined) usuario.apellido = apellido;
-    if (email !== undefined) usuario.email = email;
-    if (telefono !== undefined) usuario.telefono = telefono;
+### Paso 1. Abrir PowerShell
 
-    res.status(200).json({
-        status: 200,
-        mensaje: "Usuario actualizado",
-        usuario
-    });
-};
+```powershell
+cd D:\full-hugo\full-stak
+```
 
-// Eliminar usuario
-exports.deleteUser = (req, res) => {
-    const id = Number(req.params.id);
-    const indice = usuarios.findIndex(u => u.id === id);
+### Paso 2. Instalar las dependencias
 
-    if (indice === -1) {
-        return res.status(404).json({
-            status: 404,
-            mensaje: "Usuario no encontrado"
-        });
-    }
+Solo si es una instalación nueva o faltan dependencias:
 
-    usuarios.splice(indice, 1);
+```powershell
+npm install
+```
 
-    res.status(200).json({
-        status: 200,
-        mensaje: "Usuario eliminado correctamente"
-    });
-};
+### Paso 3. Iniciar el servidor
+
+Usar el comando definido en `package.json`. Por ejemplo, si existe el script `start`:
+
+```
