@@ -48,7 +48,7 @@ Proyecto de práctica desarrollado con Node.js, Express y MongoDB. El objetivo e
 
 
 Estructura conocida:
-
+=)===
 ```text
 full-stak/
 ├── app.js
