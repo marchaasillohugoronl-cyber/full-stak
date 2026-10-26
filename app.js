@@ -1,29 +1,19 @@
+const express = require('express')
+const app = express()
 
-const http = require('http')
+// Importa las rutas de usuarios
+const userRouter = require('./routers/userRouters')
 
-const server = http.createServer((request, response) => {
-    try {
-        if (request.url === '/' && request.method === 'GET') {
-            response.statusCode = 200
-            response.end(JSON.stringify({ "menssage": "accediendo al servidor" }))
-        }
-        else if (request.url === '/home' && request.method === 'GET') {
-            response.statusCode = 200
-            response.end(JSON.stringify({ "menssage": "accediendo a home" }))
-        }
-        else {
-            response.statusCode = 404
-            response.end(JSON.stringify({ "menssage": "no encontrado" }))
-        }
-    } catch (error) {
-        response.statusCode = 500
-        response.end(JSON.stringify({ "menssage": "error interno del servidor" }))
-    }
+// Registra las rutas bajo /user
+app.use('/user', userRouter)
+
+// Ruta principal
+app.get('/', (req, res) => {
+    console.log("Servidor creado con Express.js")
+    res.send("Servidor creado con Express.js")
 })
 
-const port = 5000
-const host = "localhost"
-
-server.listen(port, host, () => {
-    console.log(`servidor ejecutandose en http://${host}:${port}`)
+// Inicia el servidor
+app.listen(3000, () => {
+    console.log('Aplicacion con express ejecutandose en el puerto 3000')
 })
