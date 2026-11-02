@@ -9,7 +9,7 @@ class UserService {
     }
 
     // Buscar usuario por ID
-    filterById(id) {
+    async filterById(id) {
         return User.findById(id);
     }
 
@@ -28,7 +28,7 @@ class UserService {
     }
 
     // Eliminar usuario
-    delete(id) {
+    async delete(id) {
         return User.findByIdAndDelete(id);
     }
 }
