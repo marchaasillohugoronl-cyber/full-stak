@@ -20,6 +20,9 @@ curl.exe -X POST http://localhost:3000/user `
 -d '{ "nombre": "Hugo", "apellido": "Machaca", "email": "hugo@gmail.com", "telefono": "987654321" }'
 
 
+/////
+genera minimo, 4 coleciones, de preferencia utilizando distintos tipos de datos deciamles enteros string boleeanos
+
 =================================================
 //levantar los servicios
 Start-Service MongoDB

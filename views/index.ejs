@@ -5,25 +5,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
+    <link rel="stylesheet" href="/css/estilos.css">
 </head>
 <body>
 
-    <h1><%= title %></h1>
+    <header class="header">
+        <div>
+            <h1>=======Full-stak======</h1>
+        </div>
+    </header>
 
-    <% if (showMessage) { %>
-        <p><%= message %></p>
-    <% } else { %>
-        <p>Este es un mensaje por defecto</p>
-    <% } %>
+    <main class="container">
 
-    <h2>Lista de elementos</h2>
+        <section class="welcome">
+            <h2>Inicio</h2>
+        </section>
 
-    <ul>
-        <% for (let i = 0; i < items.length; i++) { %>
-            <li><%= items[i] %></li>
-        <% } %>
-    </ul>
+        <section class="selector">
+            <label for="coleccion">Seleccionar colección</label>
+            <select id="coleccion">
+                <option value="estudiantes">Estudiantes</option>
+                <option value="productos">Productos</option>
+                <option value="empleados">Empleados</option>
+                <option value="cursos">Cursos</option>
+            </select>
+        </section>
 
+        <section class="panel">
+            <h2 id="tituloFormulario">Registrar estudiante</h2>
+
+            <form id="formulario">
+                <div id="campos" class="form-grid"></div>
+
+                <button type="submit" class="btn-primary">
+                    Guardar registro
+                </button>
+            </form>
+
+            <p id="mensaje"></p>
+        </section>
+
+        <section class="panel">
+            <div class="table-header">
+                <div>
+                    <h2 id="tituloTabla">Lista de estudiantes</h2>
+                    <p>Registros creados</p>
+                </div>
+
+                <button id="btnActualizar" class="btn-secondary">
+                    Actualizar
+                </button>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead id="cabecera"></thead>
+                    <tbody id="tablaDatos"></tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+
+    <script src="/js/app.js"></script>
 </body>
-
 </html>

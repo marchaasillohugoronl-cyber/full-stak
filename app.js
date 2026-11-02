@@ -1,31 +1,39 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const connection=require('./database/connection')
+const connection = require('./database/connection');
 
+// Configuración de vistas
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// Permite recibir datos JSON
+// Middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Importa las rutas de usuarios
+// Importar rutas
+const estudianteRouter = require('./routers/estudianteRouters');
+const productoRouter = require('./routers/productoRouters');
+const empleadoRouter = require('./routers/empleadoRouters');
+const cursoRouter = require('./routers/cursoRouters');
 const userRouter = require('./routers/userRouters');
+
+// Registrar rutas
+app.use('/estudiantes', estudianteRouter);
+app.use('/productos', productoRouter);
+app.use('/empleados', empleadoRouter);
+app.use('/cursos', cursoRouter);
 app.use('/user', userRouter);
 
-// Ruta principal
+// Página principal
 app.get('/', (req, res) => {
-    const data = {
-        title: 'Bienvenido a mi sitio web',
-        showMessage: true,
-        message: 'Este es un mensaje desde Express',
-        items: [1, 2, 3, 4, 5]
-    };
-
-    res.render('index', data);
+    res.render('index', {
+        title: 'Sistema de Gestión'
+    });
 });
 
-// Inicia el servidor
+// Iniciar servidor
 app.listen(3000, () => {
-    console.log('Aplicación ejecutándose en el puerto 3000');
+    console.log('Servidor ejecutándose en el puerto 3000');
 });
