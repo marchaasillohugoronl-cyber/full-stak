@@ -1,3 +1,55 @@
+//para ver las coleciones(tablas)
+show collections
+//para crear una collecion 
+db.createCollection("clientes")
+
+//para ver lo que tienen mi colecion(tabla)
+db.usuarios.find()
+//para eliminar una colecion
+db.usuarios.drop()
+
+//En resumen: Tabla = Colección y Registro = Documento.
+
+//para borrar una base de datos 
+db.dropDatabase()
+//
+db.createCollection("usuarios")
+//como crear un insert 
+
+db.usuarios.insertOne({
+    nombre: "Hugo",
+    apellidos: "Machaca Sillo",
+    dni: "12345678",
+    telefono: 123456789
+})
+
+
+//CREATE
+//Insertar
+
+db.clientes.insertOne({...})
+
+//READ
+//Consultar
+
+db.clientes.find()
+
+//UPDATE
+//Actualizar
+
+db.clientes.updateOne()
+
+//DELETE
+//Eliminar
+
+db.clientes.deleteOne()
+
+
+///relaizar una base de datos llamada icomerce.
+ingresar como minimo, 4 coleciones, y cada colecion como minimo 2 documentos
+
+
+
 1. Sumar elementos de un array
 
 javascript
