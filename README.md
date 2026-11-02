@@ -5,20 +5,20 @@ cd D:\full-hugo\full-stak
 curl.exe http://localhost:3000/
 
 //para consultar los usuarios
+Método	URL
+GET	http://localhost:3000/user
+GET	http://localhost:3000/user/ID
+POST	http://localhost:3000/user
+PUT	http://localhost:3000/user/ID
+DELETE	http://localhost:3000/user/ID
 
-curl.exe -i http://localhost:3000/user
-//Consultar usuarios:
-curl.exe http://localhost:3000/user
-//Consultar el usuario 18:
-curl.exe http://localhost:3000/user/18
-//Crear usuario:
-$json = '{"nombre":"Hugo","apellido":"Machaca","email":"hugo@gmail.com","telefono":"987654321"}'
-curl.exe -X POST "http://localhost:3000/user" -H "Content-Type: application/json" -d $json
-//Actualizar usuario 18:
-$json = '{"nombre":"Hugo","apellido":"Machaca","email":"hugo@gmail.com","telefono":"987654321"}'
-curl.exe -X PUT "http://localhost:3000/user/18" -H "Content-Type: application/json" -d $json
-//Eliminar usuario 18:
-curl.exe -X DELETE "http://localhost:3000/user/18"
+//consultar usuarios 
+curl.exe -X GET http://localhost:3000/user
+//Registrar usuario:
+curl.exe -X POST http://localhost:3000/user `
+-H "Content-Type: application/json" `
+-d '{ "nombre": "Hugo", "apellido": "Machaca", "email": "hugo@gmail.com", "telefono": "987654321" }'
+
 
 =================================================
 //levantar los servicios
