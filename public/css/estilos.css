@@ -1,0 +1,13 @@
+[hidden] {
+    display: none !important;
+}
+
+.login-form {
+    display: grid;
+    gap: 1rem;
+    max-width: 28rem;
+}
+
+#loginMessage {
+    min-height: 1.5em;
+}

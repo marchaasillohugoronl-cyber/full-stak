@@ -5,6 +5,135 @@ const campos = document.getElementById('campos');
 const tablaDatos = document.getElementById('tablaDatos');
 const cabecera = document.getElementById('cabecera');
 const mensaje = document.getElementById('mensaje');
+const loginForm = document.getElementById('loginForm');
+const loginPanel = document.getElementById('loginPanel');
+const loginMessage = document.getElementById('loginMessage');
+const appContent = document.getElementById('appContent');
+const sessionCountdown = document.getElementById('sessionCountdown');
+const tokenKey = 'authToken';
+let countdownInterval;
+
+function setAuthenticated(authenticated) {
+    loginPanel.hidden = authenticated;
+    appContent.hidden = !authenticated;
+}
+
+function authHeaders(headers = {}) {
+    const token = sessionStorage.getItem(tokenKey);
+    return token ? { ...headers, Authorization: `Bearer ${token}` } : headers;
+}
+
+function startSessionCountdown(token) {
+    clearInterval(countdownInterval);
+
+    try {
+        const payloadPart = token.split('.')[1];
+        const base64 = payloadPart.replace(/-/g, '+').replace(/_/g, '/');
+        const payload = JSON.parse(atob(base64));
+        const expiresAt = payload.exp * 1000;
+
+        const updateCountdown = () => {
+            const remainingMs = Math.max(0, expiresAt - Date.now());
+            sessionCountdown.textContent = `La sesión se cierra en ${(remainingMs / 1000).toFixed(1)} s (${Math.ceil(remainingMs)} ms)`;
+
+            if (remainingMs <= 0) {
+                clearInterval(countdownInterval);
+                sessionStorage.removeItem(tokenKey);
+                setAuthenticated(false);
+                navigateToLogin();
+                loginMessage.textContent = 'La sesión expiró. Inicia sesión nuevamente.';
+                loginMessage.style.color = 'red';
+            }
+        };
+
+        updateCountdown();
+        countdownInterval = setInterval(updateCountdown, 50);
+    } catch (error) {
+        sessionStorage.removeItem(tokenKey);
+        setAuthenticated(false);
+    }
+}
+
+async function validateToken(token) {
+    const response = await fetch('/dashboard/verify', {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!response.ok) throw new Error('La sesión expiró. Inicia sesión nuevamente.');
+}
+
+function navigateToDashboard() {
+    if (window.location.pathname !== '/dashboard') {
+        window.history.pushState({}, '', '/dashboard');
+    }
+}
+
+function navigateToLogin() {
+    if (window.location.pathname !== '/') {
+        window.history.replaceState({}, '', '/');
+    }
+}
+
+async function syncBrowserRoute() {
+    const token = sessionStorage.getItem(tokenKey);
+
+    if (!token) {
+        setAuthenticated(false);
+        navigateToLogin();
+        return;
+    }
+
+    try {
+        await validateToken(token);
+        setAuthenticated(true);
+        navigateToDashboard();
+        startSessionCountdown(token);
+        await cargarDatos();
+    } catch (error) {
+        clearInterval(countdownInterval);
+        sessionStorage.removeItem(tokenKey);
+        setAuthenticated(false);
+        navigateToLogin();
+        loginMessage.textContent = 'La sesión expiró. Inicia sesión nuevamente.';
+        loginMessage.style.color = 'red';
+    }
+}
+
+window.addEventListener('popstate', syncBrowserRoute);
+
+loginForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    loginMessage.textContent = '';
+    const credentials = Object.fromEntries(new FormData(loginForm));
+
+    try {
+        const response = await fetch('/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(credentials)
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || result.mensaje || 'No se pudo iniciar sesión');
+
+        sessionStorage.setItem(tokenKey, result.token);
+        await validateToken(result.token);
+        setAuthenticated(true);
+        navigateToDashboard();
+        startSessionCountdown(result.token);
+        await cargarDatos();
+    } catch (error) {
+        sessionStorage.removeItem(tokenKey);
+        loginMessage.textContent = error.message;
+        loginMessage.style.color = 'red';
+        setAuthenticated(false);
+    }
+});
+
+document.getElementById('logoutButton').addEventListener('click', () => {
+    clearInterval(countdownInterval);
+    sessionStorage.removeItem(tokenKey);
+    setAuthenticated(false);
+    navigateToLogin();
+});
 
 const configuraciones = {
     estudiantes: {
@@ -118,7 +247,9 @@ async function cargarDatos() {
     const configuracion = configuraciones[seleccion];
 
     try {
-        const respuesta = await fetch('/' + seleccion);
+        const respuesta = await fetch('/' + seleccion, {
+            headers: authHeaders()
+        });
 
         if (!respuesta.ok) {
             throw new Error('No se pudieron consultar los datos');
@@ -205,9 +336,9 @@ formulario.addEventListener('submit', async (evento) => {
     try {
         const respuesta = await fetch('/' + seleccion, {
             method: 'POST',
-            headers: {
+            headers: authHeaders({
                 'Content-Type': 'application/json'
-            },
+            }),
             body: JSON.stringify(datos)
         });
 
@@ -240,4 +371,5 @@ document.getElementById('btnActualizar').addEventListener('click', cargarDatos);
 
 // Carga inicial
 mostrarFormulario();
-cargarDatos();
+
+syncBrowserRoute();

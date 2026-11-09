@@ -9,65 +9,37 @@
 </head>
 <body>
 
-    <header class="header">
-        <div>
-            <h1>=======Full-stak======</h1>
+    <div id="chat">
+
+        <input
+            type="text"
+            id="username"
+            placeholder="Ingrese su nombre de usuario"
+        >
+
+        <div id="messages">
+            <div class="message">
+                javierespna: hola
+            </div>
+            <div class="message">
+                javierespna: hola
+            </div>
         </div>
-    </header>
 
-    <main class="container">
+        <div id="writing"></div>
 
-        <section class="welcome">
-            <h2>Inicio</h2>
-        </section>
+        <div>
+            <textarea id="messageInput" placeholder="Escribe un mensaje..."></textarea>
+            <button id="sendButton">Enviar</button>
+        </div>
 
-        <section class="selector">
-            <label for="coleccion">Seleccionar colección</label>
-            <select id="coleccion">
-                <option value="estudiantes">Estudiantes</option>
-                <option value="productos">Productos</option>
-                <option value="empleados">Empleados</option>
-                <option value="cursos">Cursos</option>
-            </select>
-        </section>
+    </div>
 
-        <section class="panel">
-            <h2 id="tituloFormulario">Registrar estudiante</h2>
+    <script src="/socket.io/socket.io.js"></script>
 
-            <form id="formulario">
-                <div id="campos" class="form-grid"></div>
+    <script>
+        const socket = io();
+    </script>
 
-                <button type="submit" class="btn-primary">
-                    Guardar registro
-                </button>
-            </form>
-
-            <p id="mensaje"></p>
-        </section>
-
-        <section class="panel">
-            <div class="table-header">
-                <div>
-                    <h2 id="tituloTabla">Lista de estudiantes</h2>
-                    <p>Registros creados</p>
-                </div>
-
-                <button id="btnActualizar" class="btn-secondary">
-                    Actualizar
-                </button>
-            </div>
-
-            <div class="table-container">
-                <table>
-                    <thead id="cabecera"></thead>
-                    <tbody id="tablaDatos"></tbody>
-                </table>
-            </div>
-        </section>
-
-    </main>
-
-
-    <script src="/js/app.js"></script>
 </body>
 </html>
