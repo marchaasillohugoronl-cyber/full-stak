@@ -7,12 +7,15 @@
     <link rel="stylesheet" href="/css/estilos.css">
 </head>
 <body>
+    <div class="title">
+        <h1>Ejemplo de un chat</h1>
+    </div>
+
     <div id="chat">
         <input type="text" id="username" placeholder="Ingrese su nombre de usuario">
 
         <div id="messages">
             <div class="message">javierespna: hola</div>
-            <br>
             <div class="message">javierespna: hola</div>
         </div>
 
@@ -20,32 +23,66 @@
 
         <div>
             <textarea id="messageInput" placeholder="Escribe un mensaje..."></textarea>
-            <button id="sendButton">Enviar</button>
+            <button id="sendButton" type="button">Enviar</button>
         </div>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
-        const username=document.getElementById('username')
-        const writeMessage=document.getElementById('writeMessage')
-        const writing=document.getElementById('writing')
-        const messages=document.getElementById('messages')
-        //captura los mensajes
-        socket.on('all-message',(m)=>{
-            let content=''
-            for(const message of m){
-                content+=`
-                <div class="message">
-                    ${message.username}:${message.message}
-                </div> 
-                <br>
-                `
+        const usernameInput = document.getElementById('username');
+        const messageInput = document.getElementById('messageInput');
+        const writing = document.getElementById('writing');
+        const messagesContainer = document.getElementById('messages');
+        const sendButton = document.getElementById('sendButton');
+        let writingTimeout;
+
+        socket.on('all-messages', (messages) => {
+            messagesContainer.replaceChildren();
+
+            for (const message of messages) {
+                const item = document.createElement('div');
+                item.className = 'message';
+                item.textContent = `${message.username}: ${message.messages}`;
+                messagesContainer.appendChild(item);
             }
-            messages.innerHTML=content
-            messages.scrollTo=messages.scrollHeight
-            
-        })
+
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        });
+
+        function sendMessage() {
+            const username = usernameInput.value.trim() || 'Anónimo';
+            const text = messageInput.value.trim();
+
+            if (!text) return;
+
+            socket.emit('new-message', { username, messages: text });
+            messageInput.value = '';
+            writing.textContent = '';
+            messageInput.focus();
+        }
+
+        sendButton.addEventListener('click', sendMessage);
+
+        messageInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
+
+        messageInput.addEventListener('input', () => {
+            const username = usernameInput.value.trim() || 'Anónimo';
+            socket.emit('writing', username);
+        });
+
+        socket.on('writing', (username) => {
+            writing.textContent = `${username} está escribiendo...`;
+            clearTimeout(writingTimeout);
+            writingTimeout = setTimeout(() => {
+                writing.textContent = '';
+            }, 3000);
+        });
     </script>
 </body>
 </html>
