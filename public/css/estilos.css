@@ -1,13 +1,42 @@
-[hidden] {
-    display: none !important;
+/* Chat */
+#chat {
+    width: 400px;
+    border: 1px solid black;
+    border-radius: 4px;
 }
 
-.login-form {
-    display: grid;
-    gap: 1rem;
-    max-width: 28rem;
+/* Usuario */
+#username {
+    width: 50%;
+    padding: 10px;
+    border: 0;
 }
 
-#loginMessage {
-    min-height: 1.5em;
+/* Mensajes */
+#messages {
+    height: 300px;
+    overflow-y: auto;
+}
+
+.message {
+    display: inline-block;
+    margin: 10px;
+    padding: 8px;
+    border-radius: 5px;
+    background-color: rgb(6, 54, 54);
+    color: aliceblue;
+}
+
+/* Área para escribir */
+#messageInput {
+    display: block;
+    width: 85%;
+    margin: 10px auto;
+    padding: 10px;
+}
+
+/* Texto de estado */
+#writing {
+    text-align: center;
+    color: black;
 }

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,22 +7,13 @@
     <link rel="stylesheet" href="/css/estilos.css">
 </head>
 <body>
-
     <div id="chat">
-
-        <input
-            type="text"
-            id="username"
-            placeholder="Ingrese su nombre de usuario"
-        >
+        <input type="text" id="username" placeholder="Ingrese su nombre de usuario">
 
         <div id="messages">
-            <div class="message">
-                javierespna: hola
-            </div>
-            <div class="message">
-                javierespna: hola
-            </div>
+            <div class="message">javierespna: hola</div>
+            <br>
+            <div class="message">javierespna: hola</div>
         </div>
 
         <div id="writing"></div>
@@ -32,14 +22,30 @@
             <textarea id="messageInput" placeholder="Escribe un mensaje..."></textarea>
             <button id="sendButton">Enviar</button>
         </div>
-
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
-
     <script>
         const socket = io();
+        const username=document.getElementById('username')
+        const writeMessage=document.getElementById('writeMessage')
+        const writing=document.getElementById('writing')
+        const messages=document.getElementById('messages')
+        //captura los mensajes
+        socket.on('all-message',(m)=>{
+            let content=''
+            for(const message of m){
+                content+=`
+                <div class="message">
+                    ${message.username}:${message.message}
+                </div> 
+                <br>
+                `
+            }
+            messages.innerHTML=content
+            messages.scrollTo=messages.scrollHeight
+            
+        })
     </script>
-
 </body>
 </html>

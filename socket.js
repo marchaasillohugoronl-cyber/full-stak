@@ -1,9 +1,17 @@
-module.exports = (io) => {
-    io.on('connection', (socket) => {
-        console.log(`Se conectado aun nuevo usuario cliente al servidor: ${socket.id}`);
+const { Socket } = require("socket.io")
 
-        socket.on('disconnect', () => {
-            console.log(`El Cliente se ha desconectado del servidor : ${socket.id}`);
-        });
-    });
-};
+module.exports=(io)=>{
+    let messages=[{username:"fake-user",messages:"welcome"}]
+    io.on('connection',(Socket)=>{
+        console.log("Un nuevo Usuario conetado")
+        io.emit('all-messages',messages)
+
+        Socket.on('writing',(username)=>{
+            Socket.broadcast.emit('writing',username)
+        })
+        Socket.on('new-message',(data)=>{
+            messages.push(data)
+            io.emit('all-messages',messages)
+        })
+    })
+}

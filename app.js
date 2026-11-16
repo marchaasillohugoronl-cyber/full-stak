@@ -12,6 +12,7 @@ const { Server } = require('socket.io');
 // Configuración de vistas
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(express.static(__dirname+'public'))
 
 // Middleware
 app.use(express.json());
@@ -28,15 +29,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 //const cursoRouter = require('./routers/cursoRouters');
 //const userRouter = require('./routers/userRouters');
 
-// Registrar rutas
-//app.use('/estudiantes', estudianteRouter);
-//app.use('/productos', productoRouter);
-//app.use('/empleados', empleadoRouter);
-//app.use('/cursos', cursoRouter);
-//app.use('/user', userRouter);
-//app.use('/auth', authRouter);
-//app.use(express.json());
-//app.use('/dashboard', dashboarRouter)
+// La página principal sirve el chat; las rutas del ejemplo anterior quedan inactivas.
+app.get('/', (req, res) => {
+    res.render('index', { title: 'Chat' });
+});
 
 app.use((req, res, next) => {
     console.log("BODY RECIBIDO:", req.body);
