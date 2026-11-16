@@ -1,3 +1,5 @@
+process.loadEnvFile?.();
+
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -12,7 +14,6 @@ const { Server } = require('socket.io');
 // Configuración de vistas
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.use(express.static(__dirname+'public'))
 
 // Middleware
 app.use(express.json());

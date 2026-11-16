@@ -1,12 +1,9 @@
-const mongoose=require('mongoose')
-const Shema= mongoose.Schema
+const mongoose = require('mongoose');
 
-const messageShema=new Shema({
-    username:String,
-    message:String
+const messageSchema = new mongoose.Schema({
+    username: { type: String, required: true },
+    messages: { type: String, required: true },
+    message: { type: String }
+});
 
-})
-
-const Message=mongoose.model('Message', messageShema)
-
-module.exports=Message
+module.exports = mongoose.model('Message', messageSchema);

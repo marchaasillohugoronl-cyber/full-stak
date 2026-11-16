@@ -1,102 +1,37 @@
-esta es una practica, para usrar next
-//para probar el puerto
-cd D:\full-hugo\full-stak
-///para cosultar el puerto
-curl.exe http://localhost:3000/
+# Chat con IA
 
-//para consultar los usuarios
-Método	URL
-GET	http://localhost:3000/user
-GET	http://localhost:3000/user/ID
-POST	http://localhost:3000/user
-PUT	http://localhost:3000/user/ID
-DELETE	http://localhost:3000/user/ID
+Aplicación de práctica con Node.js, Express, EJS, Socket.IO y MongoDB. Los mensajes se guardan en MongoDB y la aplicación usa Gemini para generar respuestas de IA.
 
-//consultar usuarios 
-curl.exe -X GET http://localhost:3000/user
-//Registrar usuario:
-curl.exe -X POST http://localhost:3000/user `
--H "Content-Type: application/json" `
--d '{ "nombre": "Hugo", "apellido": "Machaca", "email": "hugo@gmail.com", "telefono": "987654321" }'
+## Requisitos
 
+- Node.js 22.6 o posterior.
+- MongoDB ejecutándose en `localhost:27017`.
+- Una clave de Gemini API creada en Google AI Studio.
 
-/////
-genera minimo, 4 coleciones, de preferencia utilizando distintos tipos de datos deciamles enteros string boleeanos
-
-=================================================
-//levantar los servicios
-Start-Service MongoDB
-//2. Entrar nuevamente a MongoDB
-& "$env:LOCALAPPDATA\Programs\mongosh\mongosh.exe" "mongodb://127.0.0.1:27017"
-//Después selecciona tu base de datos:
-use fullstak
-//Comprueba tus usuarios:
-db.usuarios.find()
-
-# Full Stak
-
-Proyecto de práctica desarrollado con Node.js, Express y MongoDB. El objetivo es construir una API para gestionar usuarios y aprender sobre rutas, controladores, bases de datos y autenticación.
-
-## 1. Tecnologías utilizadas
-
-- **Node.js:** entorno de ejecución de JavaScript.
-- **Express:** framework para crear el servidor y las rutas HTTP.
-- **MongoDB:** base de datos NoSQL.
-- **MongoDB Shell (`mongosh`):** consola para administrar MongoDB.
-- **EJS:** motor de plantillas para generar vistas HTML.
-- **JSON:** formato para intercambiar datos entre el cliente y el servidor.
-- **JWT (pendiente de implementar):** mecanismo para verificar tokens de autenticación.
-
-## 2. Ubicación del proyecto
-
-
-Estructura conocida:
-
-```text
-full-stak/
-├── app.js
-├── package.json
-├── package-lock.json
-├── controllers/
-│   └── userController.js
-├── routers/
-│   └── userRouters.js
-├── views/
-├── node_modules/
-└── usuario.json
-```
-
-La estructura puede cambiar conforme avance el desarrollo.
-
-## 3. Versiones instaladas
-
-| Tecnología | Versión |
-|---|---|
-| MongoDB Server | 8.0.11 |
-| MongoDB Shell | 2.14.0 |
-| MongoDB Compass | 1.53.1 |
-| Node.js | Verificar con `node -v` |
-| Express | Verificar en `package.json` |
-| EJS | Instalado mediante `npm i ejs` |
-
-## 4. Cómo iniciar el proyecto
-
-### Paso 1. Abrir PowerShell
-
-```powershell
-cd D:\full-hugo\full-stak
-```
-
-### Paso 2. Instalar las dependencias
-
-Solo si es una instalación nueva o faltan dependencias:
+## Instalación y ejecución
 
 ```powershell
 npm install
+Copy-Item .env.example .env
 ```
 
-### Paso 3. Iniciar el servidor
+Edita `.env` y reemplaza el valor de ejemplo por tu clave:
 
-Usar el comando definido en `package.json`. Por ejemplo, si existe el script `start`:
-
+```text
+GEMINI_API_KEY=tu_clave_de_api
 ```
+
+Inicia el servidor:
+
+```powershell
+npm run dev
+```
+
+Abre <http://localhost:3000> en el navegador.
+
+## Configuración
+
+- La base de datos configurada está en `localhost:27017`, con nombre `mydb01`.
+- El modelo Gemini configurado en `socket.js` es `gemini-3.5-flash-lite`.
+- El nivel gratuito de Gemini tiene límites de uso que pueden cambiar.
+- `.env` contiene credenciales locales y está excluido del repositorio. Nunca publiques tu clave de API.

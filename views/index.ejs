@@ -15,8 +15,6 @@
         <input type="text" id="username" placeholder="Ingrese su nombre de usuario">
 
         <div id="messages">
-            <div class="message">javierespna: hola</div>
-            <div class="message">javierespna: hola</div>
         </div>
 
         <div id="writing"></div>
@@ -36,6 +34,7 @@
         const messagesContainer = document.getElementById('messages');
         const sendButton = document.getElementById('sendButton');
         let writingTimeout;
+        let botIsWriting = false;
 
         socket.on('all-messages', (messages) => {
             messagesContainer.replaceChildren();
@@ -80,8 +79,19 @@
             writing.textContent = `${username} está escribiendo...`;
             clearTimeout(writingTimeout);
             writingTimeout = setTimeout(() => {
-                writing.textContent = '';
+                if (!botIsWriting) writing.textContent = '';
             }, 3000);
+        });
+
+        socket.on('bot-writing', (isWriting) => {
+            botIsWriting = isWriting;
+            clearTimeout(writingTimeout);
+            writing.textContent = isWriting ? 'IA está escribiendo...' : '';
+        });
+
+        socket.on('chat-error', (error) => {
+            clearTimeout(writingTimeout);
+            writing.textContent = error;
         });
     </script>
 </body>

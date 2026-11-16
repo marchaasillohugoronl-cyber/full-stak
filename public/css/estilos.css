@@ -1,46 +1,108 @@
-/* Chat */
-#chat {
-    width: 400px;
-    border: 1px solid black;
-    border-radius: 4px;
+/* Página */
+body {
+    margin: 0;
+    padding: 24px 16px;
+    background: #f1f5f4;
+    color: #18302a;
+    font-family: Arial, sans-serif;
 }
 
-/* Usuario */
-#username {
-    width: 50%;
+.title {
+    margin-bottom: 16px;
+    text-align: center;
+    color: #0a8a35;
+}
+
+.title h1 {
+    margin: 0;
+    font-size: 1.7rem;
+}
+
+/* Chat */
+
+
+/* Chat */
+#chat {
+    width: min(100%, 420px);
+    width: min(100%, 700px);
+    margin: 0 auto;
+    padding: 16px;
+    padding: 24px;
+    border: 1px solid #d5e2dc;
+    border-radius: 10px;
+    background: #fff;
+}
+/* Usuario y mensaje */
+#username,
+#messageInput {
+    width: 100%;
     padding: 10px;
-    border: 0;
+    border: 1px solid #cbd8d2;
+    border-radius: 6px;
+    font: inherit;
+}
+
+#username {
+    margin-bottom: 12px;
+}
+
+#messageInput {
+    display: block;
+    min-height: 70px;
+    margin: 10px 0;
+    resize: vertical;
+}
+
+#username:focus,
+#messageInput:focus {
+    border-color: #16834a;
+    outline: 2px solid rgb(22 131 74 / 18%);
 }
 
 /* Mensajes */
 #messages {
     height: 300px;
+    padding: 8px;
     overflow-y: auto;
+    border: 1px solid #e0e9e4;
+    border-radius: 6px;
+    background: #f8fbf9;
 }
 
 .message {
-    display: inline-block;
-    margin: 10px;
-    padding: 8px;
-    border-radius: 5px;
-    background-color: rgb(6, 54, 54);
-    color: aliceblue;
+    width: fit-content;
+    max-width: 90%;
+    margin: 8px 0;
+    padding: 9px 12px;
+    border-radius: 8px;
+    background: #e1f2e8;
+    color: #183d2a;
+    overflow-wrap: anywhere;
 }
 
-/* Área para escribir */
-#messageInput {
-    display: block;
-    width: 85%;
-    margin: 10px auto;
-    padding: 10px;
-}
-
-/* Texto de estado */
+/* Estado y botón */
 #writing {
-    text-align: center;
-    color: black;
+    min-height: 20px;
+    padding-top: 5px;
+    color: #64756c;
+    font-size: 0.9rem;
 }
-.title{
-    text-align: center;
-    color: rgb(10, 161, 35);
+
+#sendButton {
+    padding: 10px 16px;
+    border: 0;
+    border-radius: 6px;
+    background: #16834a;
+    color: #fff;
+    font: inherit;
+    cursor: pointer;
+}
+
+#sendButton:hover {
+    background: #106b3b;
+}
+
+#sendButton:focus-visible {
+    outline: 2px solid #0a8a35;
+    outline-offset: 2px;
 }

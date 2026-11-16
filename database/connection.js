@@ -7,8 +7,8 @@ const connection = mongoose.connect(`mongodb://${db.host}:${db.port}/${db.databa
 .then(() => {
     console.log('Conexion exitosa');
 })
-.catch(() => {
-    console.log('Error al conectarse');
+.catch((error) => {
+    console.error('Error al conectarse a MongoDB:', error.message);
 });
 
 //esta apagado esa variable pero con module se enciende
